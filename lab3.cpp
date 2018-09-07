@@ -93,6 +93,14 @@ int StringToInt(string val) {
 }
 
 
+/*
+    *
+        *           END OF REUSED FUNCTIONS
+             *
+                 *
+                     */
+
+
 struct Real {
     //sign bit
     int sign;
@@ -145,10 +153,15 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
+
+/*
+ * Begin manually written functions
+ */
 Real Decode(int float_value) {
     Real numToDecode;
     int temp = float_value;
     string stringExponent;
+    string stringFraction;
 
     string iee754 = intToBinary(temp);
 
@@ -166,12 +179,24 @@ Real Decode(int float_value) {
 
     numToDecode.exponent = StringToInt(stringExponent);
 
+    for (int i = 7; i < 31; i++) {
+        stringFraction += iee754[i];
+    }
+
+    numToDecode.fraction = StringToInt(stringFraction);
+
 
     return numToDecode;
 }
 
 int Encode(Real real_value) {
+    string sign = intToBinary(real_value.sign);
+    string exponent = intToBinary(real_value.exponent);
+    string fraction = intToBinary(real_value.fraction);
+    string iee754 = sign + exponent + fraction;
+    int finalIee754 = StringToInt(iee754);
 
+    return finalIee754;
 }
 
 Real Normalize(Real value) {
