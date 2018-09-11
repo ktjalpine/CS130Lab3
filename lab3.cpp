@@ -8,6 +8,30 @@
 
 using namespace std;
 
+//Actually doing the multiplication
+int multiply(int a, int b) {
+    int carry;
+    while (b != 0) {
+        carry = (a & b) << 1;
+        a = a ^ b;
+        b = carry;
+    }
+    return a;
+}
+
+
+//Actually doing the addition
+int addition(int x, int y) {
+    while (y != 0) {
+        int carry = x & y;
+
+        x = x ^ y;
+
+        y = carry << 1;
+    }
+    return x;
+}
+
 
 /*
  * All of the following functions are just reused
@@ -199,14 +223,27 @@ int Encode(Real real_value) {
     return finalIee754;
 }
 
-Real Normalize(Real value) {
+/*Real Normalize(Real value) {
 
-}
+}*/
 
 Real Multiply(Real left, Real right) {
+    int num1 = Encode(left), num2 = Encode(right), result;
+    Real final;
+    for (int i = 0; i < num2; i++) {
+        result = multiply(num1, num2);
+    }
 
+    final = Decode(result);
+    return final;
 }
 
 Real Add(Real left, Real right) {
+    int num1 = Encode(left), num2 = Encode(right), result;
+    Real final;
 
+    result = addition(num1, num2);
+
+    final = Decode(result);
+    return final;
 }
